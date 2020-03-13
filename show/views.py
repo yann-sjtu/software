@@ -5,6 +5,7 @@ import sys
 import time
 from subprocess import Popen, PIPE
 from configparser import ConfigParser
+import time
 
 # Create your views here.
 # Create your views here.
@@ -30,6 +31,7 @@ def start(request):
             res = "container " + software_name + " has been running"
         else:
             res = ("http://localhost:{}\n" + "start ok").format(port)
+            time.sleep(5)
     else:
         res = "software not found:" + software_name
     return HttpResponse(res + " at " + time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))

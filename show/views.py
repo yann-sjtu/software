@@ -21,6 +21,7 @@ def start(request):
     # 获取mysql中的host值
     cmd = cp.get(software_name, 'cmd')
     port = cp.get(software_name, 'port')
+    print("cmd:", cmd, "port:", port)
     if len(cmd) != 0 and len(port) != 0:
         child = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE, shell=True)
         out, err = child.communicate()
@@ -36,15 +37,7 @@ def start(request):
 def stop(request):
     res = ""
     software_name = request.GET.get('name')
-    child = Popen("docker ps | grep " + software_name, stdin=PIPE, stdout=PIPE, stderr=PIPE, shell=True)
-    out, err = child.communicate()
-    ret = child.wait()
-    if ret != 0:
-        res = err
-    if out == b'':
-        res = "container " + software_name + " was not exist"
-    else:
-        os.system("docker stop " + software_name)
-        os.system("docker rm " + software_name)
-        res = "stop ok"
+    os.system("docker stop " + software_name)
+    os.system("docker rm " + software_name)
+    res = "stop ok"
     return HttpResponse(res + " at " + time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))

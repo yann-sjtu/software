@@ -7,6 +7,13 @@ pip install -i https://pypi.tuna.tsinghua.edu.cn/simple  -r requirements.txt
 ```bash
 cd Apache && docker build -t="apache" . && cd ..
 ```
+准备镜像二：
+```bash
+git clone git@github.com:jura4x01/tictactoe-web.git
+cd tictactoe-web
+docker build -t tictactoe .
+```
+
 
 3. 启动服务 
 python manage.py runserver

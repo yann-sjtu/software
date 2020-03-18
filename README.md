@@ -74,3 +74,9 @@ http://127.0.0.1:8000
 本项目提供三个测试账号
 developer、third-party、buyer
 密码均为123456
+
+3. 用户购买软件之后下载一个Dockerfile文件，切换到Dockerfile所在目录，执行
+```
+docker build -t=tictactoe . && docker run -d --name=tictactoe --net=host tictactoe
+```
+即可本地运行所购软件，运行软件可以基于任何已经安装过docker的操作系统

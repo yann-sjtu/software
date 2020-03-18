@@ -75,7 +75,10 @@ http://127.0.0.1:8000
 developer、third-party、buyer
 密码均为123456
 
-3. 用户购买软件之后下载一个Dockerfile文件，切换到Dockerfile所在目录，执行
+3. 发布软件时仅支持上传Dockerfile文件，可以用tictactoe/Dockerfile文件测试，软件名为tictactoe
+验证软件网页也需要登录，登录时可以用任意账号登录
+
+4. 用户购买软件之后下载一个Dockerfile文件，切换到Dockerfile所在目录，执行
 ```
 docker build -t=tictactoe . && docker run -d --name=tictactoe --net=host tictactoe
 ```

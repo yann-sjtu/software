@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h1>购买软件</h1>
+<form action="http://localhost:8000/buy/" method="post">
+    <p>软件名：<input type="text" name="name"></p>
+    <p>价格为：{{ price }}</p>
+    <p><input type="submit" name="submit_name" value="查询价格"></p>
+    <p><a href="/i/w3school_logo_white.gif" download="w3logo"><input type="submit" name="submit_name" value="购买软件"></a></p>
+</form>
+
+</body>
+</html>

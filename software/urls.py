@@ -21,6 +21,15 @@ from show import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^$', views.index),
+    url(r'^index/$', views.index),
+    url(r'^login/$', views.log_in),
+    url(r'^logout/$', views.log_out),
+    url(r'^publish/$', views.publish),
+    url(r'^upload/$', views.upload),
+    url(r'^verify/$', views.verify),
     url(r'^start/$', views.start),
     url(r'^stop/$', views.stop),
+    url(r'^score/$', views.score),
+    url(r'^buy/$', views.buy),
+    
 ]

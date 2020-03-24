@@ -6,7 +6,8 @@
 <link rel="stylesheet" type="text/css" href="css/index.css"/> -->
   <title>软件效果验证系统</title>
 </head>
-<body>          
+<body>   
+    {% include 'head.html' %}
     <input type="text" id="start_input">
     <!-- <input type="submit" name="send" id="start_butt" value="启动docker" /> -->
     <button type="button" id="start_butt">启动</button>
@@ -34,6 +35,7 @@
         </p>
         <hr>
     </form> 
+    {% include 'footer.html' %}
     
 </body>
 <script type="text/javascript">

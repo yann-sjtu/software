@@ -83,3 +83,13 @@ developer、third-party、buyer
 docker build -t=tictactoe . && docker run -d --name=tictactoe --net=host tictactoe
 ```
 即可本地运行所购软件，运行软件可以基于任何已经安装过docker的操作系统
+
+5. fisco 查询交易记录
+sdk目录下执行：
+python console.py getTransactionReceipt 0x98ccea0432d5194e5998e2f6667d65606c4048a4a64ed290d3c478631023c652
+或
+python console.py getTransactionByHash 0x98ccea0432d5194e5998e2f6667d65606c4048a4a64ed290d3c478631023c652
+
+### 注意事项
+1. 买家初始余额为10000， 其他人初始余额为0
+2. 第三方验证收费固定为50，因此买家预存入的押金为软件初始价格+50，因此若软甲价格高于9950会导致买家余额不足。建议软件价格远低于10000

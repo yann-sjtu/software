@@ -8,11 +8,16 @@ contract SoftwareTransaction {
     mapping (bytes32 => uint) public softwarePrices;
     mapping (bytes32 => string) internal softwareHashes;
     mapping (bytes32 => bool) internal checked;
+    uint public balance1; //买家余额
+    uint public balance2; //开发者余额
+    uint public balance3; //第三方余额
+    uint public balance4; //合约押金
 
 //这个构造函数的代码仅仅只在合约创建的时候被运行。
     function SoftwareTransaction() public {
         creator = msg.sender;
         balances[creator] = 100000;
+        balance1 = 10000;
     }
     function mint(address receiver, uint amount) public {
         if (msg.sender != creator) return;
@@ -48,7 +53,30 @@ contract SoftwareTransaction {
 
     function varify(bytes32 _name, uint score) public {
         require(softwareAuthors[_name] != address(0));
+        require(balance4>=softwarePrices[_name]);
         softwarePrices[_name] = softwarePrices[_name] * score / 10;
         checked[_name] = true;
+        balance4 -= softwarePrices[_name];
+        balance2 += softwarePrices[_name];
+        if (balance4 > 50) {
+            balance4 -= 50;
+            balance3 += 50;
+            balance1 += balance4;
+            balance4 = 0;
+        } else {
+            balance3 += balance4;
+            balance4 = 0;
+        }
+    }
+    
+
+    function getBalance() public returns(uint) {
+        return balances[msg.sender];
+    }
+
+    function deposit(uint amount) public {
+        require(balance1>=amount);
+        balance1 -= amount;
+        balance4 += amount;
     }
 }

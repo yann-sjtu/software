@@ -18,3 +18,4 @@ six==1.14.0
 toolz==0.10.0
 urllib3==1.25.8
 varint==1.0.2
+argcomplete==1.11.1

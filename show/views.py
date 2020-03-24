@@ -28,12 +28,29 @@ abi_file  ="sdk/contracts/SoftwareTransaction.abi"
 data_parser = DatatypeParser()
 data_parser.load_abi_file(abi_file)
 contract_abi = data_parser.contract_abi
+info = {}
+global_price = 0
+tx_list = []
+class tx:
+    def __init__(self, hash, fromAddr, toAddr, amount, success):
+        self.hash = hash
+        self.fromAddr = fromAddr
+        self.toAddr = toAddr
+        self.amount = amount
+        self.success = success
 
 # Create your views here.
 def check_login(f):
     @wraps(f)
     def inner(request,*arg,**kwargs):
         if request.user.is_authenticated:
+            info['current_user'] = request.user.username
+            info['buyer_balance'] = client.call(contract_addr, contract_abi, "balance1", [])[0]
+            info['developer_balance'] = client.call(contract_addr, contract_abi, "balance2", [])[0]
+            info['third_party_balance'] = client.call(contract_addr, contract_abi, "balance3", [])[0]
+            info['deposit_balance'] = client.call(contract_addr, contract_abi, "balance4", [])[0]
+            global tx_list
+            info['tx_list'] = tx_list
             return f(request,*arg,**kwargs)
         else:
             return redirect('/login/')
@@ -57,12 +74,15 @@ def log_out(request):
     auth.logout(request)
     return redirect("/login/")
 
+@check_login
 def index(request):
-    return render(request, 'index.html')
+    res = client.getTransactionByHash('0xb6ab0ad0b42473f572f23f7befcd1042ce160105a41bef41f1df792fe1e05bbd')
+    print("res:", res)
+    return render(request, 'index.html', info)
 
 @check_login
 def publish(request):
-    return render(request, "publish.html")
+    return render(request, "publish.html", info)
 
 @check_login
 def upload(req):
@@ -86,15 +106,16 @@ def upload(req):
     price = req.POST.get('price')
     args = [name.encode('utf8'), int(price), res['Hash']]
     receipt = client.sendRawTransactionGetReceipt(contract_addr, contract_abi,"publish",args)
-    if receipt['status'] != '0x0':
-        return render(req, "response.html", {"response":"软件发布失败"})
-
     txhash = receipt['transactionHash']
+    if receipt['status'] != '0x0':
+        tx_list.append(tx(txhash, "developer", "", 0, False))
+        return render(req, "response.html", {"response":"软件发布失败"})
+    tx_list.append(tx(txhash, "developer", "", 0, True))
     return render(req, "response.html", {"response":"upload success!", "info1":"ipfs hash is {}".format(res['Hash']), "info2":"tx hash on fisco is {}".format(txhash)})
 
 @check_login
 def verify(request):
-    return render(request, "verify.html")
+    return render(request, "verify.html", info)
 
 @check_login
 def start(request):
@@ -135,16 +156,21 @@ def score(request):
     name = request.POST.get('name')
     score=request.POST.get('score')
     args = [name.encode('utf8'), int(score)]
+    balance4 = client.call(contract_addr, contract_abi, "balance4", [])[0]
     receipt = client.sendRawTransactionGetReceipt(contract_addr, contract_abi,"varify",args)
-    if receipt['status'] != '0x0':
-        return render(request, "response.html", {"response":"软件不存在"})
     txhash = receipt['transactionHash']
-
+    global tx_list
+    if receipt['status'] != '0x0':
+        tx_list.append(tx(txhash, "contract", "", 0, False))
+        return render(request, "response.html", {"response":"软件不存在"})
+    tx_list.append(tx(txhash, "contract", "buyer/developer/third-party", balance4, True))
     return render(request, "response.html", {"response":"grade success！", "info1":"tx hash on fisco is {}".format(txhash)})
 
 
 @check_login
 def buy(request):
+    global global_price
+    cp_info = info.copy()
     if request.method == "POST":
         name = request.POST.get('name')
         submit_name = request.POST.get("submit_name")
@@ -154,8 +180,22 @@ def buy(request):
             if receipt['status'] != '0x0':
                 return render(request, "response.html", {"response":"软件不存在"})
             res = client.call(contract_addr, contract_abi, "getPrice",[name.encode('utf8')])
-            return render(request, "buy.html", {"price":res[0]})
-        elif submit_name == '购买软件':
+            global_price = res[0]
+            cp_info = info.copy()
+            cp_info['price'] = res[0]
+            return render(request, "buy.html", cp_info)
+        elif submit_name == '存入押金':
+            if global_price == 0:
+                return render(request, "response.html", {"response":"请先查询价格"})
+            receipt = client.sendRawTransactionGetReceipt(contract_addr, contract_abi,"deposit",[global_price+50])
+            txhash = receipt['transactionHash']
+            global tx_list
+            if receipt['status'] != '0x0':
+                tx_list.append(tx(txhash, "buyer", "", 0, False))
+                return render(request, "response.html", {"response":"存入押金失败"})
+            tx_list.append(tx(txhash, "buyer", "contract", global_price+50, True))
+            return render(request, "response.html", {"response":"存入押金成功！"})
+        elif submit_name == '下载软件':
             args = [name.encode('utf8')]
             receipt = client.sendRawTransactionGetReceipt(contract_addr, contract_abi,"buySoftware",args)
             print("receipt:", receipt)
@@ -175,4 +215,4 @@ def buy(request):
             return response 
             #return render(request, "response.html", {"response":"buy success!", "info1":"hash on ipfs is {}".format(txhash)})
 
-    return render(request, "buy.html")
+    return render(request, "buy.html", info)

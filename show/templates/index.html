@@ -6,11 +6,12 @@
 <link rel="stylesheet" type="text/css" href="css/index.css"/> -->
     <title>软件效果验证系统</title>
 </head>
-<body>          
+<body>     
+    {% include 'head.html' %}
     <a href="http://localhost:8000/publish">发布软件</a>
     <a href="http://localhost:8000/verify">验证软件</a>
     <a href="http://localhost:8000/buy">购买软件</a>
     <a href="http://localhost:8000/logout">用户登录</a>
-
+    {% include 'footer.html' %}
 </body>
 </html>

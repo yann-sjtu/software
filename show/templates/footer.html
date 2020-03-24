@@ -1,0 +1,31 @@
+<!-- <div>
+    <p>交易列表</p>
+    <ul>
+    {% for tx in tx_list %}
+        <li>{{ tx }}</li>
+    {% endfor %}
+    </ul>
+</div> -->
+
+<div>
+    <hr/>
+    <p>交易列表</p>
+    <table>
+        <tr>
+            <th>hash</th>
+            <th>from</th>
+            <th>to</th>
+            <th>amount</th>
+            <th>success</th>
+        </tr>
+        {% for tx in tx_list reversed %}
+            <tr>
+                <td>{{ tx.hash }}</td>
+                <td>{{ tx.fromAddr }}</td>
+                <td>{{ tx.toAddr }}</td>
+                <td>{{ tx.amount }}</td>
+                <td>{{ tx.success }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>

@@ -33,6 +33,34 @@
 		"stateMutability": "view"
 	},
 	{
+		"constant": true,
+		"inputs": [],
+		"name": "balance4",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"type": "function",
+		"stateMutability": "view"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "getBalance",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"type": "function",
+		"stateMutability": "nonpayable"
+	},
+	{
 		"constant": false,
 		"inputs": [
 			{
@@ -112,6 +140,20 @@
 		"stateMutability": "nonpayable"
 	},
 	{
+		"constant": true,
+		"inputs": [],
+		"name": "balance2",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"type": "function",
+		"stateMutability": "view"
+	},
+	{
 		"constant": false,
 		"inputs": [
 			{
@@ -152,6 +194,34 @@
 		"constant": false,
 		"inputs": [
 			{
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "deposit",
+		"outputs": [],
+		"payable": false,
+		"type": "function",
+		"stateMutability": "nonpayable"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "balance1",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"type": "function",
+		"stateMutability": "view"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
 				"name": "receiver",
 				"type": "address"
 			},
@@ -183,6 +253,20 @@
 		"payable": false,
 		"type": "function",
 		"stateMutability": "nonpayable"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "balance3",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"type": "function",
+		"stateMutability": "view"
 	},
 	{
 		"inputs": [],

@@ -54,11 +54,16 @@ pip install -i https://pypi.tuna.tsinghua.edu.cn/simple  -r requirements.txt
 ```
 
 ##### 部署合约并配置合约地址
-~~cd sdk && python deploy.py~~
-cd sdk && python fisco_browser_flask.py
-//启动区块浏览器的时候会同时部署合约
-//脚本会返回新部署的合约地址，复制该合约地址，粘贴到show/config.ini文件
-
+```shell
+# 1. 拷贝client_config.py.template->client_config.py
+# 2. 安装solc编译器
+cd sdk
+bash init_env.sh -i
+# 启动区块浏览器的时候会同时部署合约    
+# 脚本会返回新部署的合约地址，复制该合约地址，粘贴到show/config.ini文件 
+python fisco_browser_flask.py  
+  
+```
 
 ### 操作流程
 

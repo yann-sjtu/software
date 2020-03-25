@@ -19,10 +19,9 @@ info = client.init()
 
 def get_data_parser():
     if os.path.isfile(client_config.solc_path) or os.path.isfile(client_config.solcjs_path):
-        Compiler.compile_file("contracts/HelloWorld.sol")
-        Compiler.compile_file("contracts/SimpleInfo.sol")
+        Compiler.compile_file("contracts/SoftwareTransaction.sol")
 
-    abi_file = "contracts/SimpleInfo.abi"
+    abi_file = "contracts/SoftwareTransaction.abi"
     data_parser = DatatypeParser()
     data_parser.load_abi_file(abi_file)
     return data_parser, abi_file

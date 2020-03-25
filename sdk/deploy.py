@@ -20,7 +20,7 @@ def deploy():
         contract_bin = load_f.read()
         load_f.close()
     result = client.deploy(contract_bin)
-    print(result["contractAddress"])
+    print("contract address:", result["contractAddress"])
 
 if __name__=='__main__':
     deploy()
